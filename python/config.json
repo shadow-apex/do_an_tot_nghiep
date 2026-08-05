@@ -1,0 +1,31 @@
+{
+  "_comment": "File cau hinh he thong. Chinh sua truc tiep file nay khi hieu chinh, KHONG can sua code Python.",
+
+  "camera_source": 0,
+  "serial_port": "COM3",
+  "baud_rate": 9600,
+
+  "min_area": 800,
+  "max_area": 60000,
+  "history_window": 10,
+  "vote_threshold": 7,
+  "ignore_edge_touching_objects": true,
+  "use_lighting_correction": true,
+
+  "enable_unknown_object_fallback": true,
+  "unknown_object_min_area": 900,
+  "unknown_object_saturation_thresh": 40,
+
+  "lock_timeout_seconds": 25.0,
+  "_note_pixel_calibration": "Khong con can hieu chuan pixel->cm nua. Vi tri gap la CO DINH, hieu chinh truc tiep tren Arduino bang lenh Serial: SET PICKX <gia_tri>, SET PICKY <gia_tri>, roi SAVECAL.",
+
+  "color_ranges": {
+    "R": { "lower": [0, 120, 70],   "upper": [10, 255, 255],  "name": "Do" },
+    "G": { "lower": [36, 80, 40],   "upper": [89, 255, 255],  "name": "Xanh la" },
+    "B": { "lower": [94, 80, 40],   "upper": [126, 255, 255], "name": "Xanh duong" },
+    "Y": { "lower": [20, 100, 100], "upper": [35, 255, 255],  "name": "Vang" }
+  },
+
+  "log_file": "sort_log.csv",
+  "log_enabled": true
+}
