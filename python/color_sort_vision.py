@@ -91,6 +91,12 @@ COLOR_RANGES = {
     key: {
         "lower": tuple(val["lower"]),
         "upper": tuple(val["upper"]),
+        # lower2/upper2: dai mau PHU (tuy chon) - dung cho mau DO, vi Hue
+        # cua mau do nam o 2 dau vong tron Hue trong OpenCV (gan 0 VA gan
+        # 180). Neu chi dung 1 dai lower/upper duy nhat se BO SOT mau do
+        # roi vao dau con lai. Xem "_note_red_wraparound" trong config.json.
+        "lower2": tuple(val["lower2"]) if "lower2" in val else None,
+        "upper2": tuple(val["upper2"]) if "upper2" in val else None,
         "name": val["name"],
     }
     for key, val in CFG["color_ranges"].items()
@@ -227,6 +233,10 @@ def detect_color_and_position(hsv_frame, frame_shape):
 
     for key, cfg in COLOR_RANGES.items():
         mask = cv2.inRange(hsv_frame, np.array(cfg["lower"]), np.array(cfg["upper"]))
+        if cfg.get("lower2") is not None and cfg.get("upper2") is not None:
+            # Gop them dai mau phu (VD: do o dau con lai cua vong tron Hue)
+            mask2 = cv2.inRange(hsv_frame, np.array(cfg["lower2"]), np.array(cfg["upper2"]))
+            mask = cv2.bitwise_or(mask, mask2)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
 

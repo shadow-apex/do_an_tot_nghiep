@@ -97,11 +97,26 @@ def pick_roi(frame, window_name="Chon vung mau (keo chuot, Enter de xac nhan)"):
 
 def merge_range(existing, new_lower, new_upper):
     """Gop khoang mau moi voi khoang da co (neu co) - lay min cua lower,
-    max cua upper - de khoang mau bao quat nhieu dieu kien anh sang hon."""
+    max cua upper - de khoang mau bao quat nhieu dieu kien anh sang hon.
+
+    CANH BAO VE MAU DO: kenh Hue la mot VONG TRON 0-180 trong OpenCV, mau
+    do nam o CA 2 DAU vong tron (gan 0 VA gan 180). Ham nay chi gop 1 dai
+    lower-upper LIEN TUC - neu ban hieu chinh mau do va cac lan do Hue ra
+    ca gan 0 LAN gan 180 (VD lan 1 ra Hue~3, lan 2 ra Hue~177), gop truc
+    tiep se tao ra dai qua RONG (VD 0-177, gan het vong tron Hue) va bat
+    nham hau het cac mau khac. Ham se in canh bao neu thay dieu nay xay ra
+    - trong truong hop do, hay SUA TAY 2 dai rieng trong config.json bang
+    'lower'/'upper' (dau gan 0) VA 'lower2'/'upper2' (dau gan 180) thay vi
+    dung 1 dai gop duy nhat."""
     if existing is None:
         return list(new_lower), list(new_upper)
     lower = [min(existing["lower"][i], new_lower[i]) for i in range(3)]
     upper = [max(existing["upper"][i], new_upper[i]) for i in range(3)]
+    if (upper[0] - lower[0]) > 100:
+        print("[CANH BAO] Dai Hue sau khi gop qua rong (co the do mau do "
+              "nam o 2 dau vong tron Hue bi gop nham thanh 1 dai lien tuc). "
+              "Kiem tra lai va can nhac sua tay 'lower'/'upper' + "
+              "'lower2'/'upper2' trong config.json thay vi dung dai gop nay.")
     return lower, upper
 
 

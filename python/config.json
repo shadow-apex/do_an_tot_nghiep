@@ -18,9 +18,10 @@
 
   "lock_timeout_seconds": 25.0,
   "_note_pixel_calibration": "Khong con can hieu chuan pixel->cm nua. Vi tri gap la CO DINH, hieu chinh truc tiep tren Arduino bang lenh Serial: SET PICKX <gia_tri>, SET PICKY <gia_tri>, roi SAVECAL.",
+  "_note_red_wraparound": "Mau DO nam o 2 dau vong tron Hue (gan 0 VA gan 180) trong khong gian HSV cua OpenCV, nen mau 'R' co them 'lower2'/'upper2' de bat ca 2 dau. Cac mau con lai (G/B/Y) khong nam o vung wraparound nen chi can 1 dai lower/upper la du. Neu dung hsv_color_detector.py de hieu chinh lai mau do va thay vat mau do bi bo sot, hay kiem tra gia tri Hue do duoc (co the can chinh lai ca 'lower'/'upper' VA 'lower2'/'upper2' cho khop mau vat that.",
 
   "color_ranges": {
-    "R": { "lower": [0, 120, 70],   "upper": [10, 255, 255],  "name": "Do" },
+    "R": { "lower": [0, 120, 70],   "upper": [10, 255, 255],  "lower2": [170, 120, 70], "upper2": [180, 255, 255], "name": "Do" },
     "G": { "lower": [36, 80, 40],   "upper": [89, 255, 255],  "name": "Xanh la" },
     "B": { "lower": [94, 80, 40],   "upper": [126, 255, 255], "name": "Xanh duong" },
     "Y": { "lower": [20, 100, 100], "upper": [35, 255, 255],  "name": "Vang" }

@@ -158,7 +158,11 @@ biến quang E18**, không phải 1:
   qua Serial để Python huỷ "khóa" màu đang chờ và quay lại theo dõi vật tiếp theo.
 
 ### 4.4 Camera
-- Gắn cố định phía trên vị trí gắp trên băng tải, hướng thẳng xuống.
+- ⚠️ Gắn cố định **PHÍA TRƯỚC vị trí gắp một khoảng** (không phải ngay trên
+  vị trí gắp), hướng xuống băng tải — xem giải thích chi tiết và lý do ở
+  **Bước 5, mục 5** bên dưới. Đặt ngay trên vị trí gắp sẽ khiến camera hết
+  nhìn thấy vật ngay khi băng tải vừa dừng, làm mất tác dụng của cơ chế
+  "khóa màu trong lúc vật còn di chuyển" mô tả ở mục 1.
 - Dùng webcam USB thường (đơn giản nhất) hoặc điện thoại chạy app **IP Webcam**
   (Android) nếu không có webcam.
 
