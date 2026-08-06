@@ -151,6 +151,11 @@ biến quang E18**, không phải 1:
   biến đầu để kích hoạt), có thể bỏ qua cảm biến D25 và gọi `conveyorOn()` ngay
   trong `setup()` thay vì chờ `startObjectPresent` — nhưng khi đó cần sửa lại
   `loop()` trong file `.ino` cho phù hợp.
+- ⚠️ **An toàn**: nếu băng tải đã chạy nhưng vật vì lý do nào đó (rơi khỏi băng
+  tải, bị kẹt, cảm biến CUỐI hỏng...) không bao giờ tới được vị trí gắp, Arduino
+  sẽ **tự động dừng băng tải sau `CONVEYOR_TIMEOUT_MS`** (mặc định 20 giây,
+  chỉnh trong đầu file `.ino`) thay vì chạy vô hạn, và báo `CONV_TIMEOUT_NO_OBJECT`
+  qua Serial để Python huỷ "khóa" màu đang chờ và quay lại theo dõi vật tiếp theo.
 
 ### 4.4 Camera
 - Gắn cố định phía trên vị trí gắp trên băng tải, hướng thẳng xuống.

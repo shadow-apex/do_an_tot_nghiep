@@ -381,6 +381,21 @@ def main():
                         lock_time = None
                         history.clear()
 
+                    elif line == "CONV_TIMEOUT_NO_OBJECT":
+                        # Arduino tu dung bang tai vi chay qua lau ma khong
+                        # thay vat toi vi tri gap (vat roi khoi bang tai,
+                        # ket, cam bien hong...). Huy khoa mau ngay (neu co)
+                        # thay vi phai cho het LOCK_TIMEOUT_S moi tu huy.
+                        print("[CANH BAO] Bang tai da tu dung vi qua lau khong "
+                              "thay vat toi vi tri gap - huy khoa, cho vat tiep theo.")
+                        if pending_color is not None:
+                            log_event(pending_color, get_color_name(pending_color),
+                                      pending_center, "bang_tai_tu_dung_khong_vat")
+                        pending_color = None
+                        pending_center = None
+                        lock_time = None
+                        history.clear()
+
             # ---- 2) Vat het khoa qua lau ma Arduino chua bao toi noi ----
             if pending_color is not None and lock_time is not None:
                 if time.time() - lock_time > LOCK_TIMEOUT_S:

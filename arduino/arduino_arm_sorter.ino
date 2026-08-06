@@ -27,6 +27,10 @@
                           da tu dung - Python gui ngay mau da nhan dien
                           truoc do (luc vat con dang di chuyen)
       "DONE"           : da gap-tha xong, san sang chay bang tai tiep
+      "CONV_TIMEOUT_NO_OBJECT" : bang tai da CHAY QUA LAU (>CONVEYOR_TIMEOUT_MS)
+                          ma khong thay vat toi vi tri gap - Arduino TU DUNG
+                          bang tai (an toan, tranh chay vo han). Python nen
+                          huy "khoa" mau dang cho (neu co) va quay lai theo doi.
 
     Python -> Arduino:
       "PICK:<MAU>\n"    : lenh gap vat mau gi TAI VI TRI GAP CO DINH da
@@ -72,6 +76,13 @@ const int PIN_CONV_IN2 = 23;
 const int PIN_CONV_ENA = 2;   // phai la chan ho tro PWM tren Mega (2,3,4,5,6,7...)
 const int CONV_SPEED   = 180; // 0-255, chinh toc do bang tai
 
+// AN TOAN: neu bang tai chay LIEN TUC qua lau (vd vat roi khoi bang tai
+// giua chung, bi ket, cam bien CUOI hong...) ma cam bien CUOI (PIN_SENSOR)
+// van KHONG thay vat toi noi, TU DONG DUNG bang tai thay vi chay mai mai.
+// Dam bao dung nguyen tac "binh thuong bang tai phai dung khi khong co vat",
+// ke ca khi PC/Python bi mat ket noi hoac dung.
+const unsigned long CONVEYOR_TIMEOUT_MS = 20000UL; // 20 giay chay toi da khong co ket qua
+
 // ================== CAM BIEN VAT CAN HONG NGOAI ==================
 // Cam bien IR loai module thuong: LOW = phat hien vat (active LOW)
 const int PIN_SENSOR = 24; // Cam bien cuoi (dung bang tai de gap)
@@ -79,6 +90,7 @@ const int PIN_START_SENSOR = 25; // Cam bien dau (bat bang tai chay)
 
 bool objectHandledThisPass = false; // tranh bao "OBJ_DETECTED" lien tuc cho cung 1 vat
 bool isConveyorRunning = false; // trang thai bang tai hien tai
+unsigned long conveyorStartMillis = 0; // thoi diem bang tai bat dau chay - dung de kiem tra CONVEYOR_TIMEOUT_MS
 
 // ================== SERVO - CHINH CHAN CHO DUNG PHAN CUNG ==================
 Servo servoBase;
@@ -445,7 +457,19 @@ void loop() {
   if (startObjectPresent && !isConveyorRunning && !objectHandledThisPass) {
     conveyorOn();
     isConveyorRunning = true;
+    conveyorStartMillis = millis();
     Serial.println("CONVEYOR_STARTED_BY_SENSOR"); // In ra de debug tren Serial
+  }
+
+  // --- AN TOAN: bang tai chay qua lau ma khong thay vat toi vi tri gap ---
+  // (vd vat roi khoi bang tai giua chung, bi ket, cam bien CUOI hong...)
+  // -> TU DONG DUNG bang tai, dung nguyen tac "binh thuong phai dung khi
+  // khong co vat" thay vi de chay mai mai.
+  if (isConveyorRunning && (millis() - conveyorStartMillis > CONVEYOR_TIMEOUT_MS)) {
+    conveyorOff();
+    isConveyorRunning = false;
+    objectHandledThisPass = false;
+    Serial.println("CONV_TIMEOUT_NO_OBJECT"); // bao PC: da tu dung bang tai vi qua lau khong thay vat toi noi
   }
 
   // --- Kiem tra cam bien cuoi (dung bang tai de gap) ---
