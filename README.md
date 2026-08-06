@@ -134,6 +134,13 @@ biến quang E18**, không phải 1:
 | Cảm biến CUỐI băng tải | Đúng tại **vị trí gắp cố định** (xem Bước 3, mục 5) | D24 | Phát hiện vật đã tới vị trí gắp → Arduino **tự dừng băng tải** và báo `OBJ_DETECTED` |
 
 - Nối chân tín hiệu (OUT) của từng cảm biến đúng theo bảng trên.
+- ⚠️ **Cảm biến E18-D80NK có ngõ ra NPN cực thu hở (open-collector)**, bản thân
+  nó không tự tạo được mức HIGH — bắt buộc phải có điện trở kéo lên VCC thì tín
+  hiệu mới ổn định (xem thêm datasheet/hướng dẫn của E18-D80NK). Code hiện tại
+  đã dùng `pinMode(..., INPUT_PULLUP)` để tận dụng điện trở kéo có sẵn trong
+  Arduino nên **không bắt buộc phải gắn thêm điện trở ngoài**. Nếu vẫn thấy tín
+  hiệu bị nhiễu/nhảy linh tinh dù không có vật, hãy gắn thêm 1 điện trở
+  4.7K~10K từ chân tín hiệu lên VCC 5V cho chắc chắn hơn.
 - Cảm biến loại phổ biến ra mức LOW khi phát hiện vật (đã cấu hình sẵn trong code
   là `active LOW`). Nếu cảm biến của bạn hoạt động ngược lại, đổi điều kiện
   `digitalRead(PIN_SENSOR) == LOW` (và/hoặc `digitalRead(PIN_START_SENSOR) == LOW`)

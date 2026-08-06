@@ -365,8 +365,14 @@ void setup() {
   pinMode(PIN_CONV_IN1, OUTPUT);
   pinMode(PIN_CONV_IN2, OUTPUT);
   pinMode(PIN_CONV_ENA, OUTPUT);
-  pinMode(PIN_SENSOR, INPUT);
-  pinMode(PIN_START_SENSOR, INPUT);
+  // QUAN TRONG: cam bien E18-D80NK co nga ra NPN cuc thu ho (open-collector),
+  // KHONG tu tao muc HIGH duoc - bat buoc phai co dien tro keo len VCC (1~10K)
+  // thi tin hieu moi on dinh. Dung INPUT_PULLUP de dung luon dien tro keo noi
+  // san trong Arduino (~20-50K), khong can han dien tro ngoai. Neu van doc bi
+  // nhieu/nhay lung tung du khong co vat, hay gan them dien tro ngoai 4.7K~10K
+  // tu chan tin hieu len VCC 5V cho chac chan hon.
+  pinMode(PIN_SENSOR, INPUT_PULLUP);
+  pinMode(PIN_START_SENSOR, INPUT_PULLUP);
 
   bool loaded = loadCalibrationFromEEPROM();
 
